@@ -140,6 +140,10 @@ class ScoreScreenState extends MusicBeatState
         add(ratingGTxt);
         add(ratingBTxt);
         add(scoreTxt);
+        
+        #if android
+		addVirtualPad(UP_DOWN, A_B);
+		#end
 
 		super.create();
 	}
@@ -184,10 +188,6 @@ class ScoreScreenState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		// NGio.logEvent('Fresh');
-		#end
-		
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;

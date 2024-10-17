@@ -25,31 +25,21 @@ class OptionsMenu extends MusicBeatState
 			new DownscrollOption("Change the layout of the strumline."),
 			new GhostTapOption("Ghost Tapping is when you tap a direction and it doesn't give you a miss."),
 			new Judgement("Customize your Hit Timings (LEFT or RIGHT)"),
-			#if desktop
 			new FPSCapOption("Cap your FPS (Left for -10, Right for +10. SHIFT to go faster)"),
-			#end
 			new ScrollSpeedOption("Change your scroll speed (Left for -0.1, right for +0.1. If it's at 1, it will be chart dependent)"),
 			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 			// new OffsetMenu("Get a note offset based off of your inputs!"),
 			new CustomizeGameplay("Drag'n'Drop Gameplay Modules around to your preference")
 		]),
 		new OptionCatagory("Appearance", [
-			#if desktop
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
-			new RainbowFPSOption("Make the FPS Counter Rainbow (Only works with the FPS Counter toggled on and Flashing Lights toggled off)"),
 			new AccuracyOption("Display accuracy information."),
 			new NPSDisplayOption("Shows your current Notes Per Second."),
 			new SongPositionOption("Show the songs current position (as a bar)"),
-			#else
-			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.")
-			#end
 		]),
 		
 		new OptionCatagory("Misc", [
-			#if desktop
 			new FPSOption("Toggle the FPS Counter"),
-			new ReplayOption("View replays"),
-			#end
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Turn off all watermarks from the engine."),
 			new BotPlay("Showcase your charts and mods with autoplay.")
@@ -92,6 +82,11 @@ class OptionsMenu extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+		
+		#if android
+		addVirtualPad(UP_DOWN, A_B_C);
+		virtualPad.y = -24;
+		#end
 
 		super.create();
 	}
@@ -181,6 +176,15 @@ class OptionsMenu extends MusicBeatState
 
 			if (controls.RESET)
 					FlxG.save.data.offset = 0;
+					
+			#if android
+			if (virtualPad.buttonC.justPressed) {
+			#if android
+			removeVirtualPad();
+			#end
+			openSubState(new android.AndroidControlsSubState());
+			}
+			#end
 
 			if (controls.ACCEPT)
 			{
